@@ -1,6 +1,9 @@
 package payment
 
-import "errors"
+import (
+	"errors"
+	"maps"
+)
 
 type PaymentMethod interface {
 	Pay(usd int) int
@@ -46,6 +49,6 @@ func (p PaymentModule) Info(id int) (PaymentInfo, error) {
 	return PaymentInfo{}, errors.New("нет такого")
 }
 
-func (p PaymentModule) AllInfo() map[int]PaymentInfo {
-	return p.payments
+func (p *PaymentModule) AllInfo() map[int]PaymentInfo {
+	return maps.Clone(p.payments)
 }

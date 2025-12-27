@@ -34,19 +34,15 @@ func Gas(a *Auto) (int, error) {
 	return speed, nil
 }
 
-func Panica() {
+func main() {
 	defer func() {
-		p := recover()
+		p := recover() // Возвращает была ли паника
 		if p != nil {
 			fmt.Println("Произошла паника")
 		}
 	}()
 	slice := []int{1, 2, 3}
 	fmt.Println(slice[5])
-}
-
-func main() {
-	Panica()
 	user := User{
 		Name:    "Johnny",
 		Balance: 100,
