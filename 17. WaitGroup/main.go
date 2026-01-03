@@ -10,21 +10,20 @@ func postman(text string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	for i := 1; i <= 3; i++ {
 		time.Sleep(300 * time.Millisecond)
-		fmt.Println("Я почтальон, я отнес газету", text, "в", i, "раз")
+		fmt.Println("Отнес сообщение:", text, "в", i, "раз")
 	}
 }
 
 func main() {
-	wq := &sync.WaitGroup{}
 
-	wq.Add(1)
-	go postman("Хроники чего-то", wq)
+	wg := sync.WaitGroup{}
 
-	wq.Add(1)
-	go postman("Газета не правда", wq)
+	wg.Add(1)
+	go postman("как дела?", &wg)
 
-	wq.Wait()
+	wg.Add(1)
+	go postman("Привет!", &wg)
 
-	fmt.Println("Main завершился")
+	wg.Wait()
 
 }
