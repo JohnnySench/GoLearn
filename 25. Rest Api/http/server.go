@@ -1,6 +1,7 @@
 package http
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -37,5 +38,11 @@ func (h *HTTPServer) StartServer() error {
 	// HandleGetAllUncompletedTasks
 	router.Path("/tasks").Methods(http.MethodGet).Queries("completed", "false").HandlerFunc(h.httpHandlers.HandleGetAllUncompletedTasks)
 
-	return http.ListenAndServe(":9091", router)
+	if err := http.ListenAndServe(":9091", router); err != nil {
+		if errors.Is(err, http.ErrServerClosed) {
+			return nil
+		}
+		return err
+	}
+	return nil
 }
